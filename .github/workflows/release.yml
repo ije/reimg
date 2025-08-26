@@ -83,7 +83,7 @@ jobs:
         run: gzip .artifact/*
 
       - name: Extract Release Note
-        run: echo "console.log(require('fs').readFileSync('CHANGELOG.md','utf8').split('## ')[1].slice('${{ github.ref_name }}'.length).trim())" | node > release-note.txt
+        run: echo "## ${{ github.ref_name }}" > release-note.txt
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
