@@ -1,6 +1,6 @@
 # reimg
 
-A simple CLI tool to resize images.
+A simple CLI tool to resize images, using [image-rs](https://github.com/image-rs/image).
 
 ## Installation
 
@@ -43,7 +43,6 @@ Options:
   -q, --quality <quality> Set the quality of the output image [default: 85]
   -f, --format <format>   Set the format of the output image [possible values: jpeg, png, webp, avif, ico ]
   -i, --info              Show image metadata
-  -h, --help              Print help message
 ```
 
 ## License
