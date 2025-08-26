@@ -52,16 +52,16 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu
 
       - name: Build
-        run: cargo build -p native --release --target ${{ matrix.target }}
+        run: cargo build --release --target ${{ matrix.target }}
 
       - name: Move Build
-        run: mv target/${{ matrix.target }}/release/native imgop-${{ matrix.target }}
+        run: mv target/${{ matrix.target }}/release/reimg reimg-${{ matrix.target }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: imgop-${{ matrix.target }}
-          path: imgop-${{ matrix.target }}
+          name: reimg-${{ matrix.target }}
+          path: reimg-${{ matrix.target }}
           if-no-files-found: error
 
   publish:
@@ -89,4 +89,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body_path: release-note.txt
-          files: .artifact/imgop-*.gz
+          files: .artifact/reimg-*.gz
