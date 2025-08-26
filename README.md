@@ -14,6 +14,19 @@ cargo install reimg
 reimg -w 512 -h 512 --cover -f avif < input.jpg > output.avif
 ```
 
+This tool uses stdin/stdout to read and write data. That allows you to use it as a pipeline. For example, you can use it in a Bun app to resize an image.
+
+```js
+import { $ } from "bun";
+
+const out = await $`reimg -w ${512} -h ${512} --cover -f avif < ${Bun.file("input.jpg")}`;
+const res = new Response(out.arrayBuffer(), {
+  headers: {
+    "Content-Type": "image/avif",
+  },
+});
+```
+
 ## Options
 
 ```
