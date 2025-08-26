@@ -1,0 +1,24 @@
+[package]
+name = "reimg"
+description = "A simple CLI tool to resize images."
+version = "0.0.1"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/ije/reimg"
+exclude = ["test/*", ".github/*", "rustfmt.toml", ".gitignore"]
+
+[dependencies]
+image = { version = "0.25.6", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
+
+[profile.release]
+codegen-units = 1
+debug = false
+incremental = false
+lto = true
+opt-level = 3
+panic = "abort"
+strip = "symbols"
+
+[[test]]
+name = "reimg"
+path = "test/test.rs"
