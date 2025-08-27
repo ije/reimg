@@ -30,7 +30,7 @@ const res = new Response(out.arrayBuffer(), {
 ## Options
 
 ```
-reimg -h
+$ reimg
 
 Usage: reimg [OPTIONS] < input_image_file > output_image_file
 
