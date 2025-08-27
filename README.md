@@ -1,6 +1,6 @@
 # reimg
 
-A simple CLI tool to resize images, using [image-rs](https://github.com/image-rs/image).
+A simple CLI tool for web image resizing, using [image-rs](https://github.com/image-rs/image).
 
 ## Installation
 
