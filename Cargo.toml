@@ -8,7 +8,13 @@ repository = "https://github.com/ije/reimg"
 exclude = ["test/*", ".github/*", "rustfmt.toml", ".gitignore"]
 
 [dependencies]
-image = { version = "0.25.6", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
+image = { version = "0.25.8", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
+
+[target.'cfg(not(all(target_os = "macos", target_arch = "x86_64")))'.dependencies]
+libwebp-sys = { version = "0.13.3", default-features = false, features = ["std", "parallel", "avx2", "sse41", "neon", "generate-bindings"] }
+
+[target.'cfg(all(target_os = "macos", target_arch = "x86_64"))'.dependencies]
+libwebp-sys = { version = "0.13.3", default-features = false, features = ["std", "parallel", "generate-bindings"] }
 
 [profile.release]
 codegen-units = 1
