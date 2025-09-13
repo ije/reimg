@@ -9,7 +9,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
-  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-gnu-gcc
+  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-musl-gcc
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 
 jobs:
@@ -52,7 +52,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu
 
-      - name: Install gcc-x86_64-linux-musl
+      - name: Install musl-tools
         if: matrix.target == 'x86_64-unknown-linux-musl' || matrix.target == 'aarch64-unknown-linux-musl'
         run: |
           sudo apt-get update
