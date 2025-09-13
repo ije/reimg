@@ -8,6 +8,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-gnu-gcc
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 
 jobs:
@@ -44,18 +46,19 @@ jobs:
         with:
           key: ${{ matrix.target }}
 
-      - name: Install cross (Linux)
-        if: runner.os == 'Linux'
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cross
+      - name: Install gcc-aarch64-linux-gnu
+        if: matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'aarch64-unknown-linux-musl'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
 
-      - name: Build (Linux via cross)
-        if: runner.os == 'Linux'
-        run: cross build --release --target ${{ matrix.target }}
+      - name: Install gcc-x86_64-linux-musl
+        if: matrix.target == 'x86_64-unknown-linux-musl' || matrix.target == 'aarch64-unknown-linux-musl'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
 
-      - name: Build (macOS)
-        if: runner.os == 'macOS'
+      - name: Build
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Move Build
