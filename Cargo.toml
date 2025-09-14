@@ -5,7 +5,11 @@ version = "0.0.2"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/ije/reimg"
-exclude = ["test/*", ".github/*", "rustfmt.toml", ".gitignore"]
+exclude = [".github/*", ".gitignore", "rustfmt.toml", "test/*"]
+
+[[test]]
+name = "reimg"
+path = "test/test.rs"
 
 [dependencies]
 image = { version = "0.25.8", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
@@ -17,14 +21,10 @@ libwebp-sys = { version = "0.13.3", default-features = false, features = ["std",
 libwebp-sys = { version = "0.13.3", default-features = false, features = ["std", "parallel", "generate-bindings"] }
 
 [profile.release]
-codegen-units = 1
-debug = false
-incremental = false
-lto = true
-opt-level = 3
 panic = "abort"
 strip = "symbols"
-
-[[test]]
-name = "reimg"
-path = "test/test.rs"
+codegen-units = 1
+opt-level = 3
+lto = true
+debug = false
+incremental = false
