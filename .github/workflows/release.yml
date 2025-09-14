@@ -1,11 +1,9 @@
 name: Release
 
 on:
-  pull_request:
-    branches: [ "main" ]
-  # push:
-    # tags:
-    #   - "v*.*.*"
+  push:
+    tags:
+      - "v*.*.*"
 
 env:
   CARGO_TERM_COLOR: always
@@ -79,41 +77,38 @@ jobs:
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Move Build
-        run: du target/${{ matrix.target }}/release/reimg
+        run: mv target/${{ matrix.target }}/release/reimg reimg-${{ matrix.target }}
 
-      # - name: Move Build
-      #   run: mv target/${{ matrix.target }}/release/reimg reimg-${{ matrix.target }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reimg-${{ matrix.target }}
+          path: reimg-${{ matrix.target }}
+          if-no-files-found: error
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: reimg-${{ matrix.target }}
-      #     path: reimg-${{ matrix.target }}
-      #     if-no-files-found: error
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
 
-  # publish:
-  #   name: Publish
-  #   runs-on: ubuntu-latest
-  #   needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: .artifact
 
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         merge-multiple: true
-  #         path: .artifact
+      - name: Gzip Artifact
+        run: gzip .artifact/*
 
-  #     - name: Gzip Artifact
-  #       run: gzip .artifact/*
+      - name: Extract Release Note
+        run: echo "## ${{ github.ref_name }}" > release-note.txt
 
-  #     - name: Extract Release Note
-  #       run: echo "## ${{ github.ref_name }}" > release-note.txt
-
-  #     - name: Publish Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         body_path: release-note.txt
-  #         files: .artifact/reimg-*.gz
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-note.txt
+          files: .artifact/reimg-*.gz
