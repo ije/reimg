@@ -2,14 +2,13 @@ name: Release
 
 on:
   push:
-    branches: [ "main" ]
-    # tags:
-    #   - "v*.*.*"
+    tags:
+      - "v*.*.*"
 
 env:
   CARGO_TERM_COLOR: always
   CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
-  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-musl-gcc
+  CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-gnu-gcc
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 
 jobs:
@@ -46,17 +45,22 @@ jobs:
         with:
           key: ${{ matrix.target }}
 
+      - name: Setup Zig
+        if: matrix.target == 'aarch64-unknown-linux-musl'
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.13.0
+
+      - name: Install cargo-zigbuild
+        if: matrix.target == 'aarch64-unknown-linux-musl'
+        run: |
+          cargo install cargo-zigbuild
+
       - name: Install gcc-aarch64-linux-gnu
-        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        if: matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'aarch64-unknown-linux-musl'
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu
-
-      - name: Install gcc-aarch64-linux-gnu
-        if: matrix.target == 'aarch64-unknown-linux-musl'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-musl
 
       - name: Install musl-tools
         if: matrix.target == 'x86_64-unknown-linux-musl' || matrix.target == 'aarch64-unknown-linux-musl'
@@ -64,42 +68,47 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y musl-tools
 
-      - name: Build
+      - name: Build (zig)
+        if: matrix.target == 'aarch64-unknown-linux-musl'
+        run: cargo zigbuild --release --target ${{ matrix.target }}
+
+      - name: Build (cc)
+        if: matrix.target != 'aarch64-unknown-linux-musl'
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Move Build
         run: mv target/${{ matrix.target }}/release/reimg reimg-${{ matrix.target }}
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: reimg-${{ matrix.target }}
-      #     path: reimg-${{ matrix.target }}
-      #     if-no-files-found: error
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reimg-${{ matrix.target }}
+          path: reimg-${{ matrix.target }}
+          if-no-files-found: error
 
-  # publish:
-  #   name: Publish
-  #   runs-on: ubuntu-latest
-  #   needs: build
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: build
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         merge-multiple: true
-  #         path: .artifact
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: .artifact
 
-  #     - name: Gzip Artifact
-  #       run: gzip .artifact/*
+      - name: Gzip Artifact
+        run: gzip .artifact/*
 
-  #     - name: Extract Release Note
-  #       run: echo "## ${{ github.ref_name }}" > release-note.txt
+      - name: Extract Release Note
+        run: echo "## ${{ github.ref_name }}" > release-note.txt
 
-  #     - name: Publish Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         body_path: release-note.txt
-  #         files: .artifact/reimg-*.gz
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-note.txt
+          files: .artifact/reimg-*.gz
