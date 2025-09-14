@@ -37,7 +37,7 @@ Usage: reimg [OPTIONS] < input_image_file > output_image_file
 Options:
   -w, --width <width>     Set the width of the output image
   -h, --height <height>   Set the height of the output image
-  --fit <fit>              Set the fit mode for the resize operation [possible values: cover, contain, scale-down]
+  --fit <fit>             Set the fit mode for the resize operation [possible values: cover, contain, scale-down]
     --cover               Resize the image to fill the given dimensions, cropping if necessary
     --contain             Resize the image to fit the given dimensions
     --scale-down          Resize the image to fit the given dimensions, but not larger than the original
