@@ -8,6 +8,8 @@ A simple CLI tool for web image resizing, using [image-rs](https://github.com/im
 cargo install reimg
 ```
 
+You can also download the prebuilt binary from the [release page](https://github.com/ije/reimg/releases)
+
 ## Usage
 
 reimg uses stdin/stdout to read and write image data.
