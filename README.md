@@ -16,7 +16,7 @@ reimg uses stdin/stdout to read and write image data.
 reimg -w 512 -h 512 --cover -f avif < input.jpg > output.avif
 ```
 
-You can use it as a sub-command in code. For example, resize and transform images in Bun:
+You can use reimg as a sub-command in your app. For example, resize and transform images in Bun:
 
 ```js
 import { $ } from "bun"
