@@ -46,7 +46,7 @@ Options:
     --contain             Resize the image to fit the given dimensions
     --scale-down          Resize the image to fit the given dimensions, but not larger than the original
   -q, --quality <quality> Set the quality of the output image [default: 85]
-  -f, --format  <format>  Set the format of the output image [possible values: jpeg, png, webp, avif, ico ]
+  -f, --format  <format>  Set the format of the output image [possible values: jpeg, png, webp, avif, ico]
   -i, --info              Show image metadata
 ```
 
