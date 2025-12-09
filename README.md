@@ -21,9 +21,7 @@ reimg -w 512 -h 512 --cover -f avif < input.jpg > output.avif
 You can use reimg as a sub-command in your app. For example, resize and transform images in Bun:
 
 ```js
-import { $ } from "bun"
-
-const out = await $`reimg -w ${512} -h ${512} --cover -f avif < ${Bun.file("input.jpg")}`.quiet()
+const out = await Bun.$`reimg -w ${512} -h ${512} --cover -f avif < ${Bun.file("input.jpg")}`.quiet()
 const res = new Response(out.arrayBuffer(), {
   headers: {
     "Content-Type": "image/avif"
