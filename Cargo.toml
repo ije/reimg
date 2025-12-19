@@ -12,19 +12,18 @@ name = "reimg"
 path = "test/test.rs"
 
 [dependencies]
-image = { version = "0.25.8", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
+image = { version = "0.25.9", features = ["jpeg", "png", "webp", "avif", "gif", "ico", "bmp", "tiff"] }
 
 [target.'cfg(not(all(target_os = "macos", target_arch = "x86_64")))'.dependencies]
-libwebp-sys = { version = "0.14.0", default-features = false, features = ["std", "parallel", "avx2", "sse41", "neon", "generate-bindings"] }
+libwebp-sys = { version = "0.14.1", default-features = false, features = ["std", "parallel", "avx2", "sse41", "neon", "generate-bindings"] }
 
 [target.'cfg(all(target_os = "macos", target_arch = "x86_64"))'.dependencies]
-libwebp-sys = { version = "0.14.0", default-features = false, features = ["std", "parallel", "generate-bindings"] }
+libwebp-sys = { version = "0.14.1", default-features = false, features = ["std", "parallel", "generate-bindings"] }
 
 [profile.release]
-panic = "abort"
-strip = "symbols"
-codegen-units = 1
-opt-level = 3
-lto = true
-debug = false
-incremental = false
+lto = true          # Enable link-time optimization
+opt-level = 'z'     # Optimize for size, even if it means less performance
+codegen-units = 1   # Maximize size reduction optimizations (increases compile time)
+strip = "debuginfo" # Automatically strip debug symbols from the binary
+panic = "abort"     # Abort on panic (removes unwinding code)
+
