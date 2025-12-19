@@ -902,7 +902,7 @@ checksum = "caf4aa5b0f434c91fe5c7f1ecb6a5ece2130b02ad2a590589dda5146df959001"
 
 [[package]]
 name = "reimg"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "image",
  "libwebp-sys",
