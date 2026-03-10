@@ -13,16 +13,16 @@ You can also download the prebuilt binary from the [release page](https://github
 ## Usage
 
 ```bash
-reimg -w 512 -h 512 --cover input.jpg output.avif
+reimg -s 500x500 --2x --cover input.jpg output.avif
 ```
 
-reimg uses stdin/stdout as the input/output if no input/output files provided:
+reimg uses stdin/stdout as the input/output if no input/output args provided:
 
 ```js
-const out = await Bun.$`reimg -w ${512} -h ${512} --cover -f avif < ${Bun.file("input.jpg")}`.quiet()
+const out = await Bun.$`reimg -s ${500}x${500} --cover --format avif < ${Bun.file("photo.jpg")}`.quiet()
 const res = new Response(out.arrayBuffer(), {
   headers: {
-    "Content-Type": "image/avif"
+    "content-type": "image/avif"
   }
 })
 ```
