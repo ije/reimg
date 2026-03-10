@@ -21,16 +21,25 @@ jobs:
         include:
           - os: macos-latest
             target: aarch64-apple-darwin
+            binary_name: reimg
           - os: macos-latest
             target: x86_64-apple-darwin
+            binary_name: reimg
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
+            binary_name: reimg
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            binary_name: reimg
           - os: ubuntu-latest
             target: aarch64-unknown-linux-musl
+            binary_name: reimg
           - os: ubuntu-latest
             target: x86_64-unknown-linux-musl
+            binary_name: reimg
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            binary_name: reimg.exe
 
     steps:
       - name: Checkout
@@ -77,13 +86,14 @@ jobs:
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Move Build
-        run: mv target/${{ matrix.target }}/release/reimg reimg-${{ matrix.target }}
+        shell: bash
+        run: mv "target/${{ matrix.target }}/release/${{ matrix.binary_name }}" "reimg-${{ matrix.target }}${{ endsWith(matrix.binary_name, '.exe') && '.exe' || '' }}"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: reimg-${{ matrix.target }}
-          path: reimg-${{ matrix.target }}
+          name: reimg-${{ matrix.target }}${{ endsWith(matrix.binary_name, '.exe') && '.exe' || '' }}
+          path: reimg-${{ matrix.target }}${{ endsWith(matrix.binary_name, '.exe') && '.exe' || '' }}
           if-no-files-found: error
 
   publish:
