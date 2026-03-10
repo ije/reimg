@@ -19,7 +19,7 @@ image = { version = "0.25.9", features = ["jpeg", "png", "avif", "gif", "ico", "
 libwebp-sys = { version = "0.14.2", default-features = false, features = [ "parallel", "neon", "avx2", "sse41" ] }
 
 [target.'cfg(all(target_os = "macos", target_arch = "x86_64"))'.dependencies]
-libwebp-sys = { version = "0.14.2", default-features = false, features = [ "parallel"] }
+libwebp-sys = { version = "0.14.2", default-features = false, features = [ "parallel" ] }
 
 [profile.release]
 lto = true          # Enable link-time optimization
