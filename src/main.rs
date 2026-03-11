@@ -44,6 +44,17 @@ fn main() {
           }
         }
       }
+      "-h" | "--height" => {
+        let Some(val) = args.next() else {
+          print_error_and_exit("-h/--height requires a value");
+        };
+        match val.parse::<u32>() {
+          Ok(v) if v > 0 => height = Some(v),
+          _ => {
+            print_error_and_exit("height must be a positive integer");
+          }
+        }
+      }
       "-s" | "--size" => {
         let Some(val) = args.next() else {
           print_error_and_exit("-s/--size requires a value");
@@ -75,17 +86,6 @@ fn main() {
       }
       "--4x" => {
         scale = Some(4.0);
-      }
-      "-h" | "--height" => {
-        let Some(val) = args.next() else {
-          print_error_and_exit("-h/--height requires a value");
-        };
-        match val.parse::<u32>() {
-          Ok(v) if v > 0 => height = Some(v),
-          _ => {
-            print_error_and_exit("height must be a positive integer");
-          }
-        }
       }
       "--fit" => {
         let Some(val) = args.next() else {
@@ -124,7 +124,7 @@ fn main() {
       }
       "--format" => {
         let Some(val) = args.next() else {
-          print_error_and_exit("-f/--format requires a value");
+          print_error_and_exit("--format requires a value");
         };
         format = Some(val);
       }
