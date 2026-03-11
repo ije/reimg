@@ -13,7 +13,7 @@ path = "test/test.rs"
 
 [dependencies]
 base64 = "0.22.1"
-image = { version = "0.25.9", features = ["jpeg", "png", "avif", "gif", "ico", "bmp", "tiff"] }
+image = { version = "0.25.9", features = ["jpeg", "png", "avif", "webp", "gif", "ico", "bmp", "tiff"] }
 
 [target.'cfg(not(all(target_os = "macos", target_arch = "x86_64")))'.dependencies]
 libwebp-sys = { version = "0.14.2", default-features = false, features = [ "parallel", "neon", "avx2", "sse41" ] }
