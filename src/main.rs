@@ -87,6 +87,9 @@ fn main() {
       "--4x" => {
         scale = Some(4.0);
       }
+      "--5x" => {
+        scale = Some(5.0);
+      }
       "--fit" => {
         let Some(val) = args.next() else {
           print_error_and_exit("--fit requires a value");
@@ -400,6 +403,7 @@ Options:
     --2x                         Scale the output image by 2x
     --3x                         Scale the output image by 3x
     --4x                         Scale the output image by 4x
+    --5x                         Scale the output image by 5x
   --fit         <fit>            Set the fit mode for the resize operation [possible values: cover, contain, scale-down]
     --cover                      Resize the image to fill the given dimensions, cropping if necessary
     --contain                    Resize the image to fit the given dimensions

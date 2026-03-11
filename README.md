@@ -42,6 +42,7 @@ Options:
     --2x                         Scale the output image by 2x
     --3x                         Scale the output image by 3x
     --4x                         Scale the output image by 4x
+    --5x                         Scale the output image by 5x
   --fit         <fit>            Set the fit mode for the resize operation [possible values: cover, contain, scale-down]
     --cover                      Resize the image to fill the given dimensions, cropping if necessary
     --contain                    Resize the image to fit the given dimensions
